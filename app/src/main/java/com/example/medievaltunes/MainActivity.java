@@ -20,11 +20,12 @@ public class MainActivity extends AppCompatActivity {
     public void incepe(View view) {
         EditText usernameEdittext = (EditText) findViewById(R.id.player_name);
         String Username = usernameEdittext.getText().toString();
-        if(Username.isEmpty()){
-            Toast.makeText(this, "Nume neintrodus", Toast.LENGTH_SHORT).show();
+
+        if(Username.isEmpty()){ //check if the username is empty and return a message if so
+            Toast.makeText(this, "Blank username", Toast.LENGTH_SHORT).show();
         }
-        else{
-            Intent intent = new Intent(this, EcranIntrebare.class);
+        else{//if username is not empty start the question activity
+            Intent intent = new Intent(this, QuestionActivity.class);
             startActivity(intent);
             finish();
         }

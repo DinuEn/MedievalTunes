@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MedievalTunes">
-        <activity android:name=".EcranIntrebare"
+        <activity android:name=".QuestionActivity"
             android:windowSoftInputMode="adjustResize"></activity>
 
         <activity
