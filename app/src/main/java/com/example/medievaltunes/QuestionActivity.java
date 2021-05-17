@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -27,13 +28,15 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
 
         questionList = QuestionGenerator.generateQuestions();
         setCurrentQuestion();
+        Button button = (Button) findViewById(R.id.submit_answer_button);
+
 
 
         answerList.get(0).setOnClickListener(this);
         answerList.get(1).setOnClickListener(this);
         answerList.get(2).setOnClickListener(this);
         answerList.get(3).setOnClickListener(this);
-
+        button.setOnClickListener(this);
 
 
     }
@@ -70,7 +73,7 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
         answerText4.setText(currentQuestion.getResponse4());
         answerList.add(answerText4);
 
-        currentQuestionPosition++;
+
     }
 
     private void setAnswerDefault(){
@@ -80,23 +83,43 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    private void setSelectedAnswer(int selectedAnswer){
+    private void setSelectedAnswer(int Answer){
         setAnswerDefault();
-        switch (selectedAnswer){
+        switch (Answer){
             case 1:
                 answerList.get(0).setBackgroundResource(R.drawable.selected_answer_background);
+                selectedAnswer = 1;
                 break;
             case 2:
                 answerList.get(1).setBackgroundResource(R.drawable.selected_answer_background);
+                selectedAnswer = 2;
                 break;
             case 3:
                 answerList.get(2).setBackgroundResource(R.drawable.selected_answer_background);
+                selectedAnswer = 3;
                 break;
             case 4:
                 answerList.get(3).setBackgroundResource(R.drawable.selected_answer_background);
+                selectedAnswer = 4;
                 break;
-
+            case 249: //submit answer case
+                submitAnswer(selectedAnswer);
+                break;
         }
+    }
+
+    private void submitAnswer(int selectedAnswer){
+        int correctAnswerID = questionList.get(currentQuestionPosition).getCorrect();
+        System.out.println("Selected answer"+selectedAnswer);
+        System.out.println("Correct answer" + correctAnswerID);
+        if(selectedAnswer == correctAnswerID){
+            answerList.get(selectedAnswer-1).setBackgroundResource(R.drawable.correct_answer_background);
+        }
+        else{
+            answerList.get(selectedAnswer-1).setBackgroundResource(R.drawable.wrong_answer_background);
+            answerList.get(correctAnswerID-1).setBackgroundResource(R.drawable.correct_answer_background);
+        }
+        //currentQuestionPosition++;
     }
 
     @Override
