@@ -10,9 +10,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class QuestionActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -20,6 +22,7 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
     private List<TextView> answerList = new ArrayList<TextView>();
     private int currentQuestionPosition = 0;
     private int selectedAnswer = 0;
+    private int readyToSubmit = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +50,7 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
         Question currentQuestion =  questionList.get(currentQuestionPosition);
 
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress_bar);//progress bar from xml file
-        progressBar.setProgress(currentQuestionPosition - 1);//modify by current question
+        progressBar.setProgress(currentQuestionPosition);//modify by current question
 
         TextView progressText = (TextView) findViewById(R.id.progress_text);//progress bar textview element from xml file
         progressText.setText(currentQuestionPosition + "/" + progressBar.getMax());//modify by current question
@@ -109,17 +112,32 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void submitAnswer(int selectedAnswer){
-        int correctAnswerID = questionList.get(currentQuestionPosition).getCorrect();
-        System.out.println("Selected answer"+selectedAnswer);
-        System.out.println("Correct answer" + correctAnswerID);
-        if(selectedAnswer == correctAnswerID){
-            answerList.get(selectedAnswer-1).setBackgroundResource(R.drawable.correct_answer_background);
+
+        Button button = (Button) findViewById(R.id.submit_answer_button);
+        if(readyToSubmit == 0) {
+            int correctAnswerID = questionList.get(currentQuestionPosition).getCorrect();
+            if (selectedAnswer == correctAnswerID) {
+                answerList.get(selectedAnswer - 1).setBackgroundResource(R.drawable.correct_answer_background);
+            } else {
+                answerList.get(selectedAnswer - 1).setBackgroundResource(R.drawable.wrong_answer_background);
+                answerList.get(correctAnswerID - 1).setBackgroundResource(R.drawable.correct_answer_background);
+            }
+            readyToSubmit = 1;
+            button.setText("GO TO NEXT QUESTION");
+            return;
         }
-        else{
-            answerList.get(selectedAnswer-1).setBackgroundResource(R.drawable.wrong_answer_background);
-            answerList.get(correctAnswerID-1).setBackgroundResource(R.drawable.correct_answer_background);
+
+        if(readyToSubmit == 1) {
+            if (currentQuestionPosition < (questionList.size() - 1) ) {
+                currentQuestionPosition++;
+                setCurrentQuestion();
+                button.setText("SUBMIT");
+            } else if (currentQuestionPosition == (questionList.size() - 1)) {
+                //Toast.makeText(this, "Game completed", Toast.LENGTH_SHORT).show();
+                button.setText("FINISH");
+            }
+            readyToSubmit = 0;
         }
-        //currentQuestionPosition++;
     }
 
     @Override
