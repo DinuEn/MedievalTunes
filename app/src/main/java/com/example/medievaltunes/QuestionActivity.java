@@ -2,6 +2,7 @@ package com.example.medievaltunes;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -81,7 +82,6 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
 
     private void setAnswerDefault(){
         for(TextView answer : answerList){
-            //answer.setTextColor(Color.parseColor("grey"));
             answer.setBackgroundResource(R.drawable.answer_background);
         }
     }
@@ -113,28 +113,39 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
 
     private void submitAnswer(int selectedAnswer){
 
+        //System.out.println(currentQuestionPosition);
         Button button = (Button) findViewById(R.id.submit_answer_button);
-        if(readyToSubmit == 0) {
+        if(readyToSubmit == 0) { //an answer has just been submitted
             int correctAnswerID = questionList.get(currentQuestionPosition).getCorrect();
-            if (selectedAnswer == correctAnswerID) {
+
+            if (selectedAnswer == correctAnswerID) { // the answer matches the correct id for the question, is thus correct
                 answerList.get(selectedAnswer - 1).setBackgroundResource(R.drawable.correct_answer_background);
-            } else {
+            }
+            else { //wrong answer has been selected
                 answerList.get(selectedAnswer - 1).setBackgroundResource(R.drawable.wrong_answer_background);
                 answerList.get(correctAnswerID - 1).setBackgroundResource(R.drawable.correct_answer_background);
             }
             readyToSubmit = 1;
-            button.setText("GO TO NEXT QUESTION");
+
+            if (currentQuestionPosition < (questionList.size() - 1) ) { //if this is not the last question, show go to next question
+                button.setText("GO TO NEXT QUESTION");
+            }
+            else if (currentQuestionPosition == (questionList.size() - 1)) { //if it is indeed the last question, have the option to finish
+                button.setText("FINISH");
+            }
             return;
         }
 
-        if(readyToSubmit == 1) {
-            if (currentQuestionPosition < (questionList.size() - 1) ) {
+        if(readyToSubmit == 1) { //an answer is waiting to be submitted
+
+            if (currentQuestionPosition < (questionList.size() - 1) ) { //this is not the last question, so go to a new question
                 currentQuestionPosition++;
                 setCurrentQuestion();
                 button.setText("SUBMIT");
-            } else if (currentQuestionPosition == (questionList.size() - 1)) {
-                //Toast.makeText(this, "Game completed", Toast.LENGTH_SHORT).show();
-                button.setText("FINISH");
+            } else if (currentQuestionPosition == (questionList.size() - 1)) { //this is the last question, so the finish button has already been pressed
+                Intent intent = new Intent(this, ResultsActivity.class);
+                startActivity(intent);
+                finish();
             }
             readyToSubmit = 0;
         }
