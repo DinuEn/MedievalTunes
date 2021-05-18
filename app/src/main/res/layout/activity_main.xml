@@ -60,7 +60,7 @@
                 android:layout_marginTop="16dp"
                 android:text="Start"
                 android:textColor="@color/white"
-                android:onClick="incepe"/>
+                android:onClick="start"/>
 
         </LinearLayout>
 

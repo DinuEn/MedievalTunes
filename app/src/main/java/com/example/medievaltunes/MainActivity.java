@@ -10,14 +10,17 @@ import android.content.Intent;
 
 public class MainActivity extends AppCompatActivity {
 
+    private ResultsData data;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        data = ResultsData.getInstance();
     }
 
 
-    public void incepe(View view) {
+    public void start(View view) {
         EditText usernameEdittext = (EditText) findViewById(R.id.player_name);
         String Username = usernameEdittext.getText().toString();
 
@@ -25,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Blank username", Toast.LENGTH_SHORT).show();
         }
         else{//if username is not empty start the question activity
+            data.setUsername(Username);
             Intent intent = new Intent(this, QuestionActivity.class);
             startActivity(intent);
             finish();

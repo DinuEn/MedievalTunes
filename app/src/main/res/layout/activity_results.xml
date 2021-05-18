@@ -54,5 +54,6 @@
         android:layout_height="wrap_content"
         android:text="Try again"
         android:textColor="@color/white"
-        android:textStyle="bold"></Button>
+        android:textStyle="bold"
+        android:onClick="tryAgain"></Button>
 </LinearLayout>

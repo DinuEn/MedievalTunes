@@ -22,14 +22,17 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
     private List<Question> questionList = null;
     private List<TextView> answerList = new ArrayList<TextView>();
     private int currentQuestionPosition = 0;
-    private int selectedAnswer = 0;
-    private int readyToSubmit = 0;
+    private int selectedAnswer = 0;//just a flag
+    private int readyToSubmit = 0;//just a flag
+    private int score = 0;//number of correct answers
+    private ResultsData data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ecran_intrebare);
 
+        data = ResultsData.getInstance();
         questionList = QuestionGenerator.generateQuestions();
         setCurrentQuestion();
         Button button = (Button) findViewById(R.id.submit_answer_button);
@@ -55,7 +58,7 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
 
         TextView progressText = (TextView) findViewById(R.id.progress_text);//progress bar textview element from xml file
         progressText.setText(currentQuestionPosition + "/" + progressBar.getMax());//modify by current question
-
+        data.setNumberOfQuestions(progressBar.getMax());
 
         TextView questionText = (TextView) findViewById(R.id.question);
         questionText.setText(currentQuestion.getQuestion());
@@ -120,6 +123,7 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
 
             if (selectedAnswer == correctAnswerID) { // the answer matches the correct id for the question, is thus correct
                 answerList.get(selectedAnswer - 1).setBackgroundResource(R.drawable.correct_answer_background);
+                score++;
             }
             else { //wrong answer has been selected
                 answerList.get(selectedAnswer - 1).setBackgroundResource(R.drawable.wrong_answer_background);
@@ -143,6 +147,7 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
                 setCurrentQuestion();
                 button.setText("SUBMIT");
             } else if (currentQuestionPosition == (questionList.size() - 1)) { //this is the last question, so the finish button has already been pressed
+                data.setScore(score);
                 Intent intent = new Intent(this, ResultsActivity.class);
                 startActivity(intent);
                 finish();
