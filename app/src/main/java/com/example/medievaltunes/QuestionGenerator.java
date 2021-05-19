@@ -18,5 +18,4 @@ public interface QuestionGenerator {
         Collections.shuffle(questionList);//Shuffle the questions
         return questionList;//return the shuffled list
     }
-
 }

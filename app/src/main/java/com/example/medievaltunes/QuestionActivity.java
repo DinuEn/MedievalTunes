@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,6 +28,7 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
     private int readyToSubmit = 0;//just a flag
     private int score = 0;//number of correct answers
     private ResultsData data;
+    private MediaPlayer mMediaPlayer = new MediaPlayer();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +49,14 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
         button.setOnClickListener(this);
 
 
+
     }
 
     private void setCurrentQuestion(){
+        setSong();
+
+
+
         setAnswerDefault();
 
         Question currentQuestion =  questionList.get(currentQuestionPosition);
@@ -161,5 +169,33 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
         int id = v.getId();
         setSelectedAnswer(id - 2131230793);
 
+    }
+
+    private void setSong(){
+
+        mMediaPlayer.stop();
+
+
+        switch (questionList.get(currentQuestionPosition).getTune()){
+            case 1:
+                mMediaPlayer = MediaPlayer.create(this, R.raw.pumped);
+                //System.out.println(1);
+                break;
+
+            case 2:
+                mMediaPlayer = MediaPlayer.create(this, R.raw.fear);
+                //System.out.println(2);
+                break;
+
+            case 3:
+                mMediaPlayer = MediaPlayer.create(this, R.raw.round);
+                //System.out.println(3);
+                break;
+        }
+
+
+        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        //mMediaPlayer.setLooping(true);
+        mMediaPlayer.start();
     }
 }
