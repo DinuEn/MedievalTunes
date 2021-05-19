@@ -18,6 +18,7 @@ public class ResultsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
 
+        QuestionActivity.mMediaPlayer.stop();
         data = ResultsData.getInstance();
         TextView usernameTextView = (TextView) findViewById(R.id.username);
         usernameTextView.setText(data.getUsername());

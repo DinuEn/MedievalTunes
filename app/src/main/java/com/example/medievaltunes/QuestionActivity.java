@@ -28,7 +28,8 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
     private int readyToSubmit = 0;//just a flag
     private int score = 0;//number of correct answers
     private ResultsData data;
-    private MediaPlayer mMediaPlayer = new MediaPlayer();
+    public static MediaPlayer mMediaPlayer = new MediaPlayer();
+    private Button button = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,7 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
         data = ResultsData.getInstance();
         questionList = QuestionGenerator.generateQuestions();
         setCurrentQuestion();
-        Button button = (Button) findViewById(R.id.submit_answer_button);
+        button = (Button) findViewById(R.id.submit_answer_button);
 
 
 
@@ -54,9 +55,6 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
 
     private void setCurrentQuestion(){
         setSong();
-
-
-
         setAnswerDefault();
 
         Question currentQuestion =  questionList.get(currentQuestionPosition);
@@ -99,32 +97,33 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
 
     private void setSelectedAnswer(int Answer){
         setAnswerDefault();
-        switch (Answer){
-            case 1:
-                answerList.get(0).setBackgroundResource(R.drawable.selected_answer_background);
-                selectedAnswer = 1;
-                break;
-            case 2:
-                answerList.get(1).setBackgroundResource(R.drawable.selected_answer_background);
-                selectedAnswer = 2;
-                break;
-            case 3:
-                answerList.get(2).setBackgroundResource(R.drawable.selected_answer_background);
-                selectedAnswer = 3;
-                break;
-            case 4:
-                answerList.get(3).setBackgroundResource(R.drawable.selected_answer_background);
-                selectedAnswer = 4;
-                break;
-            case 249: //submit answer case
-                submitAnswer(selectedAnswer);
-                break;
+
+        if(Answer == answerList.get(0).getId()) {
+            answerList.get(0).setBackgroundResource(R.drawable.selected_answer_background);
+            selectedAnswer = 1;
+        }
+
+        if(Answer == answerList.get(1).getId()){
+            answerList.get(1).setBackgroundResource(R.drawable.selected_answer_background);
+            selectedAnswer = 2;
+        }
+
+        if(Answer == answerList.get(2).getId()) {
+            answerList.get(2).setBackgroundResource(R.drawable.selected_answer_background);
+            selectedAnswer = 3;
+        }
+        if(Answer == answerList.get(3).getId()) {
+            answerList.get(3).setBackgroundResource(R.drawable.selected_answer_background);
+            selectedAnswer = 4;
+        }
+        if(Answer == button.getId()){
+            submitAnswer(selectedAnswer);
         }
     }
 
     private void submitAnswer(int selectedAnswer){
 
-        //System.out.println(currentQuestionPosition);
+        System.out.println("currentQuestionPosition");
         Button button = (Button) findViewById(R.id.submit_answer_button);
         if(readyToSubmit == 0) { //an answer has just been submitted
             int correctAnswerID = questionList.get(currentQuestionPosition).getCorrect();
@@ -167,29 +166,22 @@ public class QuestionActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        setSelectedAnswer(id - 2131230793);
-
+        setSelectedAnswer(id);
     }
 
     private void setSong(){
-
         mMediaPlayer.stop();
-
-
         switch (questionList.get(currentQuestionPosition).getTune()){
             case 1:
                 mMediaPlayer = MediaPlayer.create(this, R.raw.pumped);
-                //System.out.println(1);
                 break;
 
             case 2:
                 mMediaPlayer = MediaPlayer.create(this, R.raw.fear);
-                //System.out.println(2);
                 break;
 
             case 3:
                 mMediaPlayer = MediaPlayer.create(this, R.raw.round);
-                //System.out.println(3);
                 break;
         }
 
