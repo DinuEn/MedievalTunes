@@ -1,10 +1,10 @@
-#Medieval Tunes
+# Medieval Tunes
 
-##The game
+## The game
 
 The game represents a classic trivia style android game where you get random questions from a set of multiple questions. Whenever a new question appears on screen, you start hearing the "medieval" style of a modern song and the goal of the game is to recognize which song it is from multiple answers.
 
-##Instructions
+## Instructions
 
 To start the game either download the code and run it using ```Android Studio``` on Windows/Mac/Linux, or generate the apk file in Android Studio by going to ```Build``` > ```Build Bundle/APK``` > ```Build APK``` and then download the APK file on an Android phone. 
 
